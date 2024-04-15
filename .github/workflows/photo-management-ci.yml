@@ -2,12 +2,12 @@ name: CI for Photo Management Service
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: [ "main", "development" ]
     paths:
       - '.github/workflows/photo-management-service-ci.yml'
       - 'photo-management-service/**'
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ "main", "development" ]
     paths:
       - '.github/workflows/photo-management-service-ci.yml'
       - 'photo-management-service/**'
