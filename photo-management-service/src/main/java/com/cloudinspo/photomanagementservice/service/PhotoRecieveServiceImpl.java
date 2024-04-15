@@ -3,11 +3,12 @@ package com.cloudinspo.photomanagementservice.service;
 import com.cloudinspo.photomanagementservice.dto.PhotoUploadDTO;
 import com.cloudinspo.photomanagementservice.model.Photo;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class PhotoRecieveServiceImpl implements PhotoRecieveService{
 
     private final PhotoService photoService;

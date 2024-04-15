@@ -2,6 +2,7 @@ package com.cloudinspo.photomanagementservice.service;
 
 import com.cloudinspo.photomanagementservice.model.Photo;
 import com.cloudinspo.photomanagementservice.repository.PhotoRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
