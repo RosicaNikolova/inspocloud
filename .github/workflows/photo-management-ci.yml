@@ -2,12 +2,14 @@ name: CI for Photo Management Service
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main", "dev" ]
     paths:
+      - 'photo-management-service-ci.yml'
       - 'photo-management-service/**'
   pull_request:
-    branches: [ main ]
+    branches: [ "main", "dev" ]
     paths:
+      - 'photo-management-service-ci.yml'
       - 'photo-management-service/**'
 
 jobs:
