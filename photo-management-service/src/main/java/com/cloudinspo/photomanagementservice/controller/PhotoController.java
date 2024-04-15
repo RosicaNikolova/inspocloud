@@ -13,10 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PhotoController {
     private final PhotoService photoService;
-//    @PostMapping
-//    public Photo addPhoto(@RequestBody Photo photo) {
-//        return photoService.addPhoto(photo);
-//    }
+
 
     @GetMapping
     public List<Photo> getAllPhotos() {
