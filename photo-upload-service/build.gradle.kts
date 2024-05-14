@@ -25,10 +25,10 @@ extra["springCloudVersion"] = "2023.0.1"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+	implementation ("org.springframework.boot:spring-boot-starter-amqp")
+	//implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 	//For Gradle, add to dependencies section of build.gradle
 	implementation("com.cloudinary:cloudinary-http44:1.31.0")
-	implementation ("org.springframework.boot:spring-boot-starter-amqp")
 
 	//implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	compileOnly("org.projectlombok:lombok")

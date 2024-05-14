@@ -1,6 +1,10 @@
-package com.cloudinspo.photouploadservice.configuration;
+package com.cloudinspo.photomanagementservice.config;
 
-import org.springframework.amqp.core.*;
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -11,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-
     @Value("${photo.upload.queue}")
     private String queueName;
 
@@ -22,13 +25,13 @@ public class RabbitMQConfig {
     private String routingKey;
 
     @Bean
-    DirectExchange exchange() {
-        return new DirectExchange(exchange);
+    Queue queue() {
+        return new Queue(queueName);
     }
 
     @Bean
-    Queue queue() {
-        return new Queue(queueName);
+    DirectExchange exchange() {
+        return new DirectExchange(exchange);
     }
 
     @Bean
@@ -47,6 +50,4 @@ public class RabbitMQConfig {
         rabbitTemplate.setMessageConverter(converter());
         return rabbitTemplate;
     }
-
-
 }
