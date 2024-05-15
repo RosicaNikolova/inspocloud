@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -60,7 +61,7 @@ public class LoginServiceImpl implements LoginService {
                 Map.class
         );
 
-        String accessToken = (String) response.getBody().get("access_token");
+        String accessToken = (String) Objects.requireNonNull(response.getBody()).get("access_token");
         return accessToken;
     }
 }
