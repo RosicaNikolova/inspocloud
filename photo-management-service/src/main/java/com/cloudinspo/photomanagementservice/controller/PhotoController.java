@@ -1,6 +1,5 @@
 package com.cloudinspo.photomanagementservice.controller;
 
-
 import com.cloudinspo.photomanagementservice.model.Photo;
 import com.cloudinspo.photomanagementservice.service.PhotoService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PhotoController {
     private final PhotoService photoService;
-
 
     @GetMapping("/photos")
     public List<Photo> getAllPhotos() {
