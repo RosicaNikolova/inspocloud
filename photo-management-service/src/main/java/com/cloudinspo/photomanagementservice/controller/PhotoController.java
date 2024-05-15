@@ -4,6 +4,7 @@ package com.cloudinspo.photomanagementservice.controller;
 import com.cloudinspo.photomanagementservice.model.Photo;
 import com.cloudinspo.photomanagementservice.service.PhotoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,14 +16,18 @@ public class PhotoController {
     private final PhotoService photoService;
 
 
-    @GetMapping
+    @GetMapping("/photos")
     public List<Photo> getAllPhotos() {
         return photoService.getAllPhotos();
     }
 
     @GetMapping("/{id}")
-    public Photo getPhotoById(@PathVariable String id) {
-        return photoService.getPhotoById(id);
+    public ResponseEntity<Photo> getPhotoById(@PathVariable String id) {
+        Photo photo = photoService.getPhotoById(id);
+        if (photo == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(photo);
     }
 
     @DeleteMapping("/{id}")

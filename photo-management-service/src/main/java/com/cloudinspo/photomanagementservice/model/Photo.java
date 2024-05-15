@@ -17,6 +17,4 @@ public class Photo {
     private String uri;
     private String title;
     private List<String> tags;
-
-
 }

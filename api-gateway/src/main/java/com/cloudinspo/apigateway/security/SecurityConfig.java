@@ -16,15 +16,16 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec.anyExchange().authenticated());
+                .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+                        .pathMatchers("/login").permitAll()
+                        .anyExchange().authenticated());
 
         http.oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> httpSecurityOAuth2ResourceServerConfigurer
-                .jwt(jwtConfigurer ->jwtConfigurer
+                .jwt(jwtConfigurer -> jwtConfigurer
                         .jwkSetUri("http://localhost:8080/realms/inspocloud/protocol/openid-connect/certs")));
 
         return http.build();
     }
-
 
 
 //    @Bean

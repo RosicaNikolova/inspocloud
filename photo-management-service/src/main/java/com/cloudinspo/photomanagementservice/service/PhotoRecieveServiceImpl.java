@@ -22,8 +22,7 @@ public class PhotoRecieveServiceImpl implements PhotoRecieveService{
                 .tags(photoUploadDTO.getTags())
                 .build();
 
+        // Save photo details to a database.
         photoService.addPhoto(photo);
-        // Here, implement the logic to process the message.
-        // For example, save photo details to a database.
     }
 }
