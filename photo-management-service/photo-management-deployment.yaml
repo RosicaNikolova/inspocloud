@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photo-management-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photo-management-service
+  template:
+    metadata:
+      labels:
+        app: photo-management-service
+    spec:
+      containers:
+        - name: photo-management-service
+          image: rositsanikolova/photo-management-service  # Replace this with your actual Docker image name
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_RABBITMQ_HOST
+              value: "rabbitmq"  # Use the same label as the RabbitMQ Pods
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: "guest"
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: "guest"

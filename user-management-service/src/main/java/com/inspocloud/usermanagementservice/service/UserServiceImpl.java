@@ -1,88 +1,45 @@
 package com.inspocloud.usermanagementservice.service;
-import com.inspocloud.usermanagementservice.model.UserRegisterDTO;
+
+import com.inspocloud.usermanagementservice.model.User;
+import com.inspocloud.usermanagementservice.rabbit.RabbitSender;
+import com.inspocloud.usermanagementservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
+    private final RabbitSender rabbitSender;
 
-    @Value("${keycloak.create.user.url}")
-    private String createUserUrl;
-
-    private final KeycloakService keycloakService;
-
-    //The method should be UserDto or the token
     @Override
-    public ResponseEntity<String> createNewUser(UserRegisterDTO userRegisterDTO) {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        //Retrieving the client token from Keycloack
-        String clientToken = keycloakService.getClientToken();
-
-        //Setting the content in the body as JSON and attaching the client token from Keycloack
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.setBearerAuth(clientToken);
-
-        // Setting up the credentials in a request body
-        String requestBody = "{\"username\": \"" + userRegisterDTO.getUsername()
-                + "\", \"firstName\": \"" + userRegisterDTO.getFirstName()
-                + "\", \"lastName\": \"" + userRegisterDTO.getLastName()
-                + "\", \"email\": \"" + userRegisterDTO.getMail() + "\", \"enabled\": true, \"credentials\": [{\"type\": \"password\", \"value\": \"" + userRegisterDTO.getPassword() + "\"}],"
-                + "\"realmRoles\": [\"" + userRegisterDTO.getRole() + "\"]"
-                +"}";
-
-
-        //Attaching the headers and the body to the request to Keycloack
-        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
-
-        //Executing the request
-        ResponseEntity<String> response =  restTemplate.exchange(
-                createUserUrl,
-                HttpMethod.POST,
-                requestEntity,
-                String.class
-        );
-        System.out.println(response.getBody());
-
-        return response;
-
-//        if (response.getStatusCode() == HttpStatus.CREATED)
-//        {
-//            System.out.println(response.getBody());
-//        }
-//        else
-//        {
-//            throw new RuntimeException("Failed to create user in Keycloak: " + response.getBody());
-//        }
+    public void createNewUser(User user) {
+        userRepository.save(user);
     }
 
-//    @Override
-//    public void getUserIdByUsername(String username, String clientToken) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        String keycloackBaseURL =  "http://localhost:8181/admin/realms/sport-spot-realm/users";
-//
-//        //Setting up headers of the request
-//        HttpHeaders requestHeaders = new HttpHeaders();
-//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        requestHeaders.setBearerAuth(clientToken);
-//
-//        //Executing the request
-//        ResponseEntity<String> response = restTemplate.exchange(
-//                keycloackBaseURL + "/users?username=" + username,
-//                HttpMethod.GET,
-//                new HttpEntity<>(requestHeaders),
-//                String.class
-//        );
-//
-//        System.out.println(response);
-//
-//    }
+    @Override
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
+        rabbitSender.sendDeleteUserToExchange(id);
+    }
 
+    @Override
+    public void edtUser(User user) {
+
+        Optional<User> optionalUser = userRepository.findById(user.getUserId());
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+
+            // Save edited user
+            userRepository.save(existingUser);
+            // Send edit user operation to RabbitMQ
+            rabbitSender.sendEditUserToExchange(user);
+        } else {
+            throw new RuntimeException("User not found with id: " + user.getUserId());
+        }
+    }
 }

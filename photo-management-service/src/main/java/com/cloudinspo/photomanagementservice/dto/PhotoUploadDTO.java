@@ -10,7 +10,11 @@ import java.util.List;
 public class PhotoUploadDTO {
 
     private String uri;
+    private String publicId;
     private String title;
     private List<String> tags;
+    private String userId;
+    private String firstName;
+    private String lastName;
 
 }

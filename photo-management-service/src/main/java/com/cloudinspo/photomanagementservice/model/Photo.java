@@ -15,6 +15,10 @@ public class Photo {
     @Id
     private String id;
     private String uri;
+    private String publicId;
     private String title;
     private List<String> tags;
+    private String userId;
+    private String firstName;
+    private String lastName;
 }

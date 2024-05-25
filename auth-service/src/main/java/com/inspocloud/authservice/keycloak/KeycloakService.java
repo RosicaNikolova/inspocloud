@@ -1,6 +1,5 @@
-package com.inspocloud.usermanagementservice.service;
+package com.inspocloud.authservice.keycloak;
 
 public interface KeycloakService {
     String getClientToken();
-
 }

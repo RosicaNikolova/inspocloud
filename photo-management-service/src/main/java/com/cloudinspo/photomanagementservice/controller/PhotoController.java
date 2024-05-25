@@ -1,5 +1,6 @@
 package com.cloudinspo.photomanagementservice.controller;
 
+import com.cloudinspo.photomanagementservice.dto.UpdatePhotoDTO;
 import com.cloudinspo.photomanagementservice.model.Photo;
 import com.cloudinspo.photomanagementservice.service.PhotoService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class PhotoController {
         return photoService.getAllPhotos();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/photo/{id}")
     public ResponseEntity<Photo> getPhotoById(@PathVariable String id) {
         Photo photo = photoService.getPhotoById(id);
         if (photo == null) {
@@ -28,8 +29,16 @@ public class PhotoController {
         return ResponseEntity.ok(photo);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePhoto(@PathVariable String id) {
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> deletePhoto(@PathVariable String id) {
         photoService.deletePhoto(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("/edit")
+    public ResponseEntity<Void> updatePhoto(@RequestBody UpdatePhotoDTO updatePhotoDTO) {
+        photoService.updatePhotoDetails(updatePhotoDTO);
+        return ResponseEntity.noContent().build();
     }
 }

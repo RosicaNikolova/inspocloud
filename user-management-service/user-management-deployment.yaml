@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-management
+  template:
+    metadata:
+      labels:
+        app: user-management
+    spec:
+      containers:
+        - name: user-management
+          image: rositsanikolova/user-management:latest  # Replace this with your actual Docker image name
+          ports:
+            - containerPort: 8085
+          env:
+            - name: SPRING_RABBITMQ_HOST
+              value: "rabbitmq"  # Use the same label as the RabbitMQ Pods
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: "guest"
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: "guest"

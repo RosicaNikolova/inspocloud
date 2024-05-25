@@ -49,4 +49,33 @@ public class RabbitMQConfig {
     }
 
 
+
+    //RabbitMQ values for deleting photo, received from Photo Management Service
+    //Direct exchange config
+
+    @Value("${delete.photo.queue}")
+    private String deletePhotoQueue;
+
+    @Value("${delete.photo.exchange}")
+    private String deletePhotoExchange;
+
+    @Value("${delete.photo.routing-key}")
+    private String deletePhotoRoutingKey;
+
+    @Bean
+    Queue DeletePhotoQueue() {
+        return new Queue(deletePhotoQueue);
+    }
+
+    @Bean
+    DirectExchange DeletePhotoExchange() {
+        return new DirectExchange(deletePhotoExchange);
+    }
+
+    @Bean
+    Binding DeletePhotoBinding(Queue DeletePhotoQueue, DirectExchange DeletePhotoExchange) {
+        return BindingBuilder.bind(DeletePhotoQueue).to(DeletePhotoExchange).with(deletePhotoRoutingKey);
+    }
+
+
 }

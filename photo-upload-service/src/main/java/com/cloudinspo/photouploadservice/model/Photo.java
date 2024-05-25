@@ -13,6 +13,7 @@ import java.util.UUID;
 @Builder
 public class Photo {
     private String uri;
+    private String publicId;
     private String title;
     private List<String> tags;
 }

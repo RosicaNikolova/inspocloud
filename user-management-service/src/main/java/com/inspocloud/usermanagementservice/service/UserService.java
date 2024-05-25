@@ -1,9 +1,9 @@
 package com.inspocloud.usermanagementservice.service;
 
-import com.inspocloud.usermanagementservice.model.UserRegisterDTO;
-import org.springframework.http.ResponseEntity;
+import com.inspocloud.usermanagementservice.model.User;
 
 public interface UserService {
-
-    ResponseEntity<String> createNewUser(UserRegisterDTO userDetails);
+    void createNewUser(User userDetails);
+    void deleteUser(String id);
+    void edtUser(User user);
 }

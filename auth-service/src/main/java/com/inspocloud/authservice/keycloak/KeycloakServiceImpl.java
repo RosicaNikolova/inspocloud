@@ -1,4 +1,4 @@
-package com.inspocloud.usermanagementservice.service;
+package com.inspocloud.authservice.keycloak;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,11 +10,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
-
 @Service
 @RequiredArgsConstructor
 public class KeycloakServiceImpl implements KeycloakService {
-
     @Value("${keycloak.resource}")
     private String clientId;
 

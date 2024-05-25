@@ -1,9 +1,10 @@
-package com.inspocloud.usermanagementservice.model;
+package com.inspocloud.authservice.model;
+
 
 import lombok.Data;
 
 @Data
-public class UserRegisterDTO {
+public class RegisterUserDTO {
     private String username;
     private String password;
     private String firstName;

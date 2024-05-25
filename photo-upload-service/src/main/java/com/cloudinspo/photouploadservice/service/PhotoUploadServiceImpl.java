@@ -1,14 +1,12 @@
 package com.cloudinspo.photouploadservice.service;
+import com.cloudinspo.photouploadservice.dto.CloudinaryResponseDTO;
 import com.cloudinspo.photouploadservice.dto.PhotoUploadDTO;
-import com.cloudinspo.photouploadservice.dto.PhotoUploadResponseDTO;
 import com.cloudinspo.photouploadservice.model.Photo;
+import com.cloudinspo.photouploadservice.rabbit.RabbitMQSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -19,7 +17,7 @@ public class PhotoUploadServiceImpl implements PhotoUploadService {
     private final RabbitMQSender rabbitMQSender;
 
     @Override
-    public ResponseEntity<PhotoUploadResponseDTO> uploadImage(PhotoUploadDTO photoUploadDTO) {
+    public ResponseEntity<Photo> uploadImage(PhotoUploadDTO photoUploadDTO) {
 //        try {
             if (photoUploadDTO.getTitle().isEmpty()) {
                 return ResponseEntity.badRequest().build();
@@ -32,32 +30,24 @@ public class PhotoUploadServiceImpl implements PhotoUploadService {
            // }
             //PhotoModel photoModel = new PhotoModel();
             //photoModel.se(photoUploadDTO.getTitle());
-            String returnedPhotoURL = cloudinaryService.uploadFile(photoUploadDTO.getFile(), "folder_1");
+            CloudinaryResponseDTO cloudinaryResponseDTO = cloudinaryService.uploadFile(photoUploadDTO.getFile(), "folder_1");
             //photoModel.setUrl(cloudinaryService.uploadFile(photoUploadDTO.getFile(), "folder_1"));
-            if(returnedPhotoURL == null) {
+            if(cloudinaryResponseDTO == null) {
                 return ResponseEntity.badRequest().build();
             }
 
-        Photo photoModel = Photo.builder()
-                    .uri(returnedPhotoURL)
+        Photo photo = Photo.builder()
+                    .uri(cloudinaryResponseDTO.getUrl())
+                    .publicId(cloudinaryResponseDTO.getPublicId())
                     .title(photoUploadDTO.getTitle())
                     .tags(photoUploadDTO.getTags())
                     .build();
 
-            //photoUploadRepository.save(photoModel);
-
-
-        PhotoUploadResponseDTO photoUploadResponseDTO = PhotoUploadResponseDTO.builder()
-                    //.tags(photoUploadDTO.getTags())
-                    .title(photoModel.getTitle())
-                    .uri(photoModel.getUri())
-                    .tags(photoModel.getTags())
-                    .build();
 
         //Send metadata to Photo Management Service
-        rabbitMQSender.sendPhoto(photoUploadResponseDTO);
+        rabbitMQSender.sendPhoto(photo);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(photoUploadResponseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(photo);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            return null;
