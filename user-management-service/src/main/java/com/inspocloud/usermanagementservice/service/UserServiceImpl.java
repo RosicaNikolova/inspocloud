@@ -1,5 +1,4 @@
 package com.inspocloud.usermanagementservice.service;
-
 import com.inspocloud.usermanagementservice.model.User;
 import com.inspocloud.usermanagementservice.rabbit.RabbitSender;
 import com.inspocloud.usermanagementservice.repository.UserRepository;
@@ -13,6 +12,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RabbitSender rabbitSender;
+
 
     @Override
     public void createNewUser(User user) {
@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
             User existingUser = optionalUser.get();
             existingUser.setFirstName(user.getFirstName());
             existingUser.setLastName(user.getLastName());
+            existingUser.setEmail(user.getEmail());
 
             // Save edited user
             userRepository.save(existingUser);
@@ -41,5 +42,12 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("User not found with id: " + user.getUserId());
         }
+    }
+
+    @Override
+    public User getUserDetails(String userId) {
+        userId = userId.trim();
+        System.out.println("Received user with Id: " + userId);
+        return userRepository.findById(userId).orElse(null);
     }
 }

@@ -18,12 +18,15 @@ public class RabbitMQListenerImpl implements RabbitMQListener {
     @RabbitListener(queues = "${photo.upload.queue}")
     public void receiveMessage(PhotoUploadDTO photoUploadDTO) {
         // Assuming PhotoUploadDTO is the DTO containing the data you sent from the Photo Upload Service
-        System.out.println("Received photo for processing: " + photoUploadDTO.getTitle());
+        System.out.println("Received photo for processing from Photo Upload Service: " + photoUploadDTO.getTitle());
         Photo photo = Photo.builder()
                 .uri(photoUploadDTO.getUri())
                 .publicId(photoUploadDTO.getPublicId())
                 .title(photoUploadDTO.getTitle())
                 .tags(photoUploadDTO.getTags())
+                .userId(photoUploadDTO.getUserId())
+                .firstName(photoUploadDTO.getFirstName())
+                .lastName(photoUploadDTO.getLastName())
                 .build();
 
         // Save photo details to a database.
@@ -33,6 +36,7 @@ public class RabbitMQListenerImpl implements RabbitMQListener {
     @Override
     @RabbitListener(queues = "${edit.queue.ps}")
     public void receiveEditUser(User user) {
+        System.out.println("Received user to edit" + user);
         photoService.updateUserDetailsPhoto(user);
     }
 

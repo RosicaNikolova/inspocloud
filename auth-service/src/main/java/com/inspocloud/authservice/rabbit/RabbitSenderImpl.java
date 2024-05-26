@@ -20,6 +20,6 @@ public class RabbitSenderImpl implements RabbitSender {
     @Override
     public void sendUser(User user) {
         rabbitTemplate.convertAndSend(exchange, routingKey, user);
-        System.out.println("User sent: " + user);
+        System.out.println("User sent to User Management Service: " + user);
     }
 }

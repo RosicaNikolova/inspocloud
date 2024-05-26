@@ -1,5 +1,6 @@
 package com.cloudinspo.photomanagementservice.controller;
 
+import com.cloudinspo.photomanagementservice.dto.PhotoRequest;
 import com.cloudinspo.photomanagementservice.dto.UpdatePhotoDTO;
 import com.cloudinspo.photomanagementservice.model.Photo;
 import com.cloudinspo.photomanagementservice.service.PhotoService;
@@ -20,12 +21,14 @@ public class PhotoController {
         return photoService.getAllPhotos();
     }
 
-    @GetMapping("/photo/{id}")
-    public ResponseEntity<Photo> getPhotoById(@PathVariable String id) {
-        Photo photo = photoService.getPhotoById(id);
+    @PostMapping("/get")
+    public ResponseEntity<Photo> getPhotoById(@RequestBody PhotoRequest photoRequest) {
+        Photo photo = photoService.getPhotoById(photoRequest.getPublicId());
         if (photo == null) {
+            System.out.println("Photo not found");
             return ResponseEntity.notFound().build();
         }
+        System.out.println("Photo found: " + photo);
         return ResponseEntity.ok(photo);
     }
 
@@ -37,8 +40,13 @@ public class PhotoController {
 
 
     @PutMapping("/edit")
-    public ResponseEntity<Void> updatePhoto(@RequestBody UpdatePhotoDTO updatePhotoDTO) {
-        photoService.updatePhotoDetails(updatePhotoDTO);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Photo> updatePhoto(@RequestBody UpdatePhotoDTO updatePhotoDTO) {
+        Photo photo = photoService.updatePhotoDetails(updatePhotoDTO);
+        if (photo == null) {
+            System.out.println("Photo not found");
+            return ResponseEntity.notFound().build();
+        }
+        System.out.println("Photo updated " + photo);
+        return ResponseEntity.ok(photo);
     }
 }

@@ -1,20 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak
+  name: auth-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak
+      app: auth-service
   template:
     metadata:
       labels:
-        app: keycloak
+        app: auth-service
     spec:
       containers:
-        - name: keycloak
-          image: quay.io/keycloak/keycloak:24.0.4
+        - name: auth-service
+          image: rositsanikolova/auth-service:latest  # Replace with the actual image path
           ports:
-            - containerPort: 8080
-          command: ["kc.sh", "start", "-c", "/opt/jboss/keycloak/standalone/configuration/standalone.xml"]
+            - containerPort: 8084
+          env:
+            # Keycloak variables
+            - name: KEYCLOAK_AUTH_SERVER_URL
+              value: "http://keycloak-service:8080"  # Adjust to the Keycloak service endpoint
+            - name: KEYCLOAK_RESOURCE
+              value: "inspocloud"
+            - name: KEYCLOAK_REALM
+              value: "inspocloud"
+            - name: KEYCLOAK_CREDENTIALS_SECRET
+              value: "pJ2UfRApXmHzKfk2WCLTrAKya9SOrziD"
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI
+              value: "http://keycloak-service:8080/realms/inspocloud/protocol/openid-connect/certs"
+
+            # RabbitMQ variables
+            - name: SPRING_RABBITMQ_HOST
+              value: "rabbitmq-service"  # The service name for RabbitMQ within Kubernetes
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: "guest"
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: "guest"
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"

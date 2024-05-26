@@ -51,7 +51,6 @@ public class KeycloakServiceImpl implements KeycloakService {
         requestBody.add("username", keycloakUser);
         requestBody.add("password", keycloakPassword);
 
-        System.out.println(clientTokenURL);
 
         //Adding the headers and the body to the HTTP request
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
@@ -65,7 +64,6 @@ public class KeycloakServiceImpl implements KeycloakService {
         );
 
         String clientToken = (String) response.getBody().get("access_token");
-        System.out.println(clientToken);
         return clientToken;
     }
 }

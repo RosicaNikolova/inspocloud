@@ -26,6 +26,12 @@ public class UserController {
 //        }
 //    }
 
+
+    @GetMapping("/test")
+    public ResponseEntity<String> getTestMessage() {
+        return ResponseEntity.ok("Test message");
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
@@ -37,4 +43,21 @@ public class UserController {
         userService.edtUser(user);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/get")
+    public ResponseEntity<User> getUserDetails(@RequestBody String id) {
+        System.out.println("Getting Details for user:" + id);
+
+        User user = userService.getUserDetails(id);
+        if (user != null) {
+            System.out.println("Retrieved user details:" + user.getFirstName() + " " + user.getLastName());
+
+            return ResponseEntity.ok(user);
+        } else {
+            System.out.println("User Not found");
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

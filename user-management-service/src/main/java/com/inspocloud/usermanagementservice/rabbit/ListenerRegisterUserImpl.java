@@ -15,7 +15,6 @@ public class ListenerRegisterUserImpl implements ListenerRegisterUser {
     @RabbitListener(queues = "${user.create.queue}")
     public void receiveUser(User user) {
         System.out.println("Received user for processing: " + user.getFirstName());
-
         // Call user service to save the new user
         userService.createNewUser(user);
     }

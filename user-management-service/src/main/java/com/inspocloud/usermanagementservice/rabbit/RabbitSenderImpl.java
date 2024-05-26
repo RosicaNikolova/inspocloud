@@ -29,6 +29,6 @@ public class RabbitSenderImpl implements RabbitSender {
     @Override
     public void sendEditUserToExchange(User user) {
         rabbitTemplate.convertAndSend(editUserExchange, "", user);
-        System.out.println("Delete user with User id: " + user.getUserId());
+        System.out.println("Edited user sent to Auth Service: " + user);
     }
 }

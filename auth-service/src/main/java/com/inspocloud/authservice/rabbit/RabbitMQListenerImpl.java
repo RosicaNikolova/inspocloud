@@ -15,7 +15,7 @@ public class RabbitMQListenerImpl implements RabbitMQListener {
     @Override
     @RabbitListener(queues = "${edit.queue}")
     public void receiveEditUser(User user) {
-        System.out.println("Received user for editing: " + user.getFirstName());
+        System.out.println("Received user for editing: " + user);
 
         // Call user service to save the new user
         keyCloakUserManagement.editUser(user);

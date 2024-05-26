@@ -3,6 +3,7 @@ package com.cloudinspo.apigateway.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -26,6 +27,7 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+                        .pathMatchers(HttpMethod.OPTIONS).permitAll() // Allow all OPTIONS requests
                         .pathMatchers("api/auth/*").permitAll()
                         .anyExchange().authenticated());
 

@@ -20,7 +20,7 @@ public class RabbitMQSenderImpl implements RabbitMQSender {
     @Override
     public void sendPhoto(Photo photo) {
         rabbitTemplate.convertAndSend(exchange, routingKey, photo);
-        System.out.println("Photo sent: " + photo);
+        System.out.println("Photo sent to Photo Management Service: " + photo);
     }
 
 }

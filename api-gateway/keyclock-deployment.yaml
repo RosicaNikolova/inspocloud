@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak
+  labels:
+    app: keycloak
 spec:
   replicas: 1
   selector:
@@ -15,6 +17,19 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:24.0.4
+          args: ["start-dev"]  # Adjust this as needed for your environment
+          env:
+            - name: KEYCLOAK_USER
+              value: "admin"
+            - name: KEYCLOAK_PASSWORD
+              value: "password"
           ports:
             - containerPort: 8080
-          command: ["kc.sh", "start", "-c", "/opt/jboss/keycloak/standalone/configuration/standalone.xml"]
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+          # Liveness probe removed for troubleshooting

@@ -20,5 +20,5 @@ public interface PhotoService {
 
     void resetUserDetailsPhoto(String userId);
 
-    void updatePhotoDetails(UpdatePhotoDTO updatePhotoDTO);
+    Photo updatePhotoDetails(UpdatePhotoDTO updatePhotoDTO);
 }

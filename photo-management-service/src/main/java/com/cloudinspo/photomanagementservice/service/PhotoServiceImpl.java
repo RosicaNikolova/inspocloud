@@ -21,7 +21,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public Photo addPhoto(Photo photo) {
-        return photoRepository.save(photo);
+        Photo savedPhoto = photoRepository.save(photo);
+        System.out.println("Photo details saved in Mongo" + savedPhoto);
+        return savedPhoto;
     }
 
     @Override
@@ -30,7 +32,8 @@ public class PhotoServiceImpl implements PhotoService {
     }
     @Override
     public Photo getPhotoById(String id) {
-        return photoRepository.findById(id).orElse(null);
+        System.out.println("Retrieving Photo with ID: " + id);
+        return photoRepository.findByPublicId(id).orElse(null);
     }
 
     @Override
@@ -46,7 +49,8 @@ public class PhotoServiceImpl implements PhotoService {
         for(Photo photo: photos) {
             photo.setFirstName(user.getFirstName());
             photo.setLastName(user.getLastName());
-            photoRepository.save(photo);
+            Photo updated = photoRepository.save(photo);
+            System.out.println("User Info updated for photo: " + updated.getTitle());
         }
     }
 
@@ -56,22 +60,26 @@ public class PhotoServiceImpl implements PhotoService {
         for(Photo photo: photos) {
             photo.setFirstName("Unknown");
             photo.setLastName("Unknown");
-            photoRepository.save(photo);
+            Photo updated = photoRepository.save(photo);
+            System.out.println("User Info deleted for photo: " + updated.getTitle());
         }
     }
 
     @Override
-    public void updatePhotoDetails(UpdatePhotoDTO updatePhotoDTO) {
-        Optional<Photo> optionalPhoto = photoRepository.findById(updatePhotoDTO.getId());
+    public Photo updatePhotoDetails(UpdatePhotoDTO updatePhotoDTO) {
+        System.out.println("Updating Photo with ID: " + updatePhotoDTO.getId());
+        Optional<Photo> optionalPhoto = photoRepository.findByPublicId(updatePhotoDTO.getId());
         if (optionalPhoto.isPresent()) {
             Photo existingPhoto = optionalPhoto.get();
             existingPhoto.setTitle(updatePhotoDTO.getTitle());
             existingPhoto.setTags(updatePhotoDTO.getTags());
+            System.out.println("Photo updated: " + optionalPhoto);
 
             // Save edited photo
-            photoRepository.save(existingPhoto);
+            return photoRepository.save(existingPhoto);
         } else {
-            throw new RuntimeException("Photo not found with id: " + updatePhotoDTO.getId());
+            System.out.println("Photo not found: ");
+            return null;
         }
     }
 

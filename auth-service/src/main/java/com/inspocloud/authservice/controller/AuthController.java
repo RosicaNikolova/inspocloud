@@ -5,12 +5,12 @@ import com.inspocloud.authservice.model.RegisterUserDTO;
 import com.inspocloud.authservice.model.ResponseLoginDTO;
 import com.inspocloud.authservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientResponseException;
 
 
@@ -24,7 +24,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
         try{
-            return authService.createNewUser(registerUserDTO);
+            String userId = authService.createNewUser(registerUserDTO);
+            return new ResponseEntity<>(userId, HttpStatus.CREATED);
         }
         catch (RestClientResponseException ex) {
             return ResponseEntity.status(ex.getStatusCode())
@@ -33,14 +34,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseLoginDTO> login(@RequestBody LoginUserDTO loginUserDTO) {
-  //      try {
+    public ResponseEntity<?> login(@RequestBody LoginUserDTO loginUserDTO) {
+        try {
             ResponseLoginDTO responseLoginDTO = authService.login(loginUserDTO);
             return ResponseEntity.ok(responseLoginDTO);
- //       }
-//        catch (RestClientResponseException ex) {
-//            return ResponseEntity.status(ex.getStatusCode())
-//                    .body(ex.);
-//        }
+        }
+        catch (RestClientResponseException ex) {
+            return ResponseEntity.status(ex.getStatusCode())
+                    .body(ex.getMessage());
+        }
     }
 }
