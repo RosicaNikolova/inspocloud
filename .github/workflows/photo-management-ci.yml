@@ -28,6 +28,11 @@ jobs:
         cd photo-management-service
         ./gradlew build -x test
         ls -l build/libs/
+    - name: Upload JAR files
+      uses: actions/upload-artifact@v2
+      with:
+        name: jar-files
+        path: photo-management-service/build/libs/*.jar
 
   test:
     needs: build
@@ -59,6 +64,11 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Download JAR files
+      uses: actions/download-artifact@v2
+      with:
+        name: jar-files
+        path: photo-management-service/build/libs/
     - name: List JAR files
       run: ls -l photo-management-service/build/libs/
     - name: Build and push Docker image
