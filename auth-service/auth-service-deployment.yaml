@@ -39,11 +39,3 @@ spec:
               value: "guest"
             - name: SPRING_RABBITMQ_PASSWORD
               value: "guest"
-
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "1"
