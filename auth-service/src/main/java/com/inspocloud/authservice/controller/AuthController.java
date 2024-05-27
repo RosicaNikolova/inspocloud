@@ -21,6 +21,8 @@ public class AuthController {
 
     private final AuthService authService;
 
+    //Testing pipeline 1
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
         try{
