@@ -26,7 +26,7 @@ jobs:
     - name: Build with Gradle
       run: |
         cd photo-upload-service
-        ./gradlew assemble
+        ./gradlew build -x test
         ls -l build/libs/
     - name: Upload JAR files
       uses: actions/upload-artifact@v2
