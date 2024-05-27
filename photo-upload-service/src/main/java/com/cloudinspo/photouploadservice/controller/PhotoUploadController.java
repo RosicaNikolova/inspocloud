@@ -19,6 +19,8 @@ public class PhotoUploadController {
 
     private final PhotoUploadService photoUploadService;
 
+    //Testing pipeline
+
     @GetMapping("/test")
     public String TestPhotoUpload() {
         return "Test successful";
