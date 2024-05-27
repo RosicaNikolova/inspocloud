@@ -1,3 +1,6 @@
+# Use an OpenJDK 17 base image from Alpine for a lightweight container
+FROM openjdk:17-jdk-alpine
+
 # Expose the port the application uses
 EXPOSE 8081
 
