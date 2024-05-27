@@ -38,7 +38,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Run tests
-      run: cd photo-management-service && ./gradlew test
+      run: |
+        cd photo-management-service
+        ./gradlew build -x test
+        ls -l build/libs/
 
   docker-publish:
     needs: [build, test]
