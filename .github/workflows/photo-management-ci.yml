@@ -24,7 +24,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Build with Gradle
-      run: cd photo-management-service && ./gradlew build -x test
+    - run: |
+        cd photo-management-service
+        ./gradlew build -x test
+        ls -l build/libs/
 
   test:
     needs: build
