@@ -16,7 +16,7 @@ import java.util.List;
 public class PhotoController {
     private final PhotoService photoService;
 
-    //Testing pipeline 6
+    //Testing pipeline 7
 
     @GetMapping("/photos")
     public List<Photo> getAllPhotos() {
