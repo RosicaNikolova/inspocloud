@@ -48,7 +48,7 @@ jobs:
     - name: Run tests
       run: |
         cd photo-management-service
-        ./gradlew build -x test
+        ./gradlew test
         ls -l build/libs/
 
   docker-publish:
