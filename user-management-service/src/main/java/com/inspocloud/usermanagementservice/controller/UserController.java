@@ -31,12 +31,6 @@ public class UserController {
 //        }
 //    }
 
-
-    @GetMapping("/test")
-    public ResponseEntity<String> getTestMessage() {
-        return ResponseEntity.ok("Test message");
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
