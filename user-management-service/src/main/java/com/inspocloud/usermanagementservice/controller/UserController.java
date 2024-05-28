@@ -15,10 +15,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Test User Management Service!");
-    }
 
 //    @PostMapping("/register")
 //    public ResponseEntity<String> registerUser(@RequestBody User user) {
@@ -56,6 +52,12 @@ public class UserController {
             System.out.println("User Not found");
             return ResponseEntity.notFound().build();
         }
+    }
+
+
+    @GetMapping("/kube")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Test User Management Service!");
     }
 
 

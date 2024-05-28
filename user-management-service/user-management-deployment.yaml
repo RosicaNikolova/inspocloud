@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-management
-          image: rositsanikolova/user-management:latest  # Replace this with your actual Docker image name
+          image: rositsanikolova/user-management-service:latest  # Replace this with your actual Docker image name
           ports:
             - containerPort: 8085
           env:
