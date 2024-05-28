@@ -5,7 +5,7 @@ metadata:
   labels:
     app: keycloak
 spec:
-  type: CLusterIP
+  type: ClusterIP
   ports:
     - port: 8080
       targetPort: 8080
