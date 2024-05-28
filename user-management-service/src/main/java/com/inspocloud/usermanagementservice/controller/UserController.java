@@ -55,7 +55,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/kube")
+    @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Test User Management Service!");
     }
