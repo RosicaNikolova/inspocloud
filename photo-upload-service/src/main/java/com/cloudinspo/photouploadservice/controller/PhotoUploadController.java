@@ -19,7 +19,10 @@ public class PhotoUploadController {
 
     private final PhotoUploadService photoUploadService;
 
-    //Testing pipeline
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Test Photo Upload Service!");
+    }
 
     @GetMapping("/test")
     public String TestPhotoUpload() {

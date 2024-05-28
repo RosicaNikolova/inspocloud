@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers(HttpMethod.OPTIONS).permitAll() // Allow all OPTIONS requests
-                        .pathMatchers("api/auth/*").permitAll()
+                        .pathMatchers("api/auth/*", "api/gateway/test", "api/photo/test", "api/upload/test", "api/user/test").permitAll()
                         .anyExchange().authenticated());
 
         http.oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> httpSecurityOAuth2ResourceServerConfigurer

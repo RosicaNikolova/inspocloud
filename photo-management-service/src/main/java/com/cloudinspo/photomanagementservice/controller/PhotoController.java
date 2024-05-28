@@ -18,6 +18,11 @@ public class PhotoController {
 
     //Testing pipeline 10 - final
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Test Photo Management Service!");
+    }
+
     @GetMapping("/photos")
     public List<Photo> getAllPhotos() {
         return photoService.getAllPhotos();
