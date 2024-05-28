@@ -19,8 +19,12 @@ spec:
             - containerPort: 8084
           env:
             # Keycloak variables
+            - name: KEYCLOAK_USERNAME
+              value: "admin"
+            - name: KEYCLOAK_PASSWORD
+              value: "admin"
             - name: KEYCLOAK_AUTH_SERVER_URL
-              value: "http://keycloak-service:8080"  # Adjust to the Keycloak service endpoint
+              value: "http://keycloak:8080"  # Adjust to the Keycloak service endpoint
             - name: KEYCLOAK_RESOURCE
               value: "inspocloud"
             - name: KEYCLOAK_REALM
@@ -28,7 +32,9 @@ spec:
             - name: KEYCLOAK_CREDENTIALS_SECRET
               value: "pJ2UfRApXmHzKfk2WCLTrAKya9SOrziD"
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI
-              value: "http://keycloak-service:8080/realms/inspocloud/protocol/openid-connect/certs"
+              value: "http://keycloak:8080/realms/inspocloud/protocol/openid-connect/certs"
+            - name: KEYCLOAK_CREATE_USER_URL
+              value: "http://keycloak:8080/admin/realms/inspocloud/users"
 
             # RabbitMQ variables
             - name: SPRING_RABBITMQ_HOST
@@ -39,3 +45,38 @@ spec:
               value: "guest"
             - name: SPRING_RABBITMQ_PASSWORD
               value: "guest"
+
+            - name: USER_CREATE_QUEUE
+              value: user_create_queue
+            - name: USER_CREATE_EXCHANGE
+              value: user_create_exchange
+            - name: USER_CREATE_ROUTING_KEY
+              value: user_create_key
+            - name: DELETE_QUEUE
+              value: delete_queue_as
+            - name: DELETE_USER_EXCHANGE
+              value: delete_user_exchange
+            - name: USER_EDIT_EXCHANGE
+              value: user_edit_exchange
+            - name: EDIT_QUEUE
+              value: edit_queue_as
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: auth-service-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: auth-service
+  minReplicas: 1
+  maxReplicas: 10  # Adjust maxReplicas based on your expected maximum load
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60  # Target CPU utilization percentage

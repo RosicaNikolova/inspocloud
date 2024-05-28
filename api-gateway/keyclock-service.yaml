@@ -5,11 +5,12 @@ metadata:
   labels:
     app: keycloak
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 30080  # You can change this port to any available NodePort range (typically 30000-32767)
       protocol: TCP
   selector:
     app: keycloak
+
+

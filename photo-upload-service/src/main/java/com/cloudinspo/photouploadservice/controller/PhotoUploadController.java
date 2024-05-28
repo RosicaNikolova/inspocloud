@@ -24,11 +24,6 @@ public class PhotoUploadController {
         return ResponseEntity.ok("Test Photo Upload Service!");
     }
 
-    @GetMapping("/test")
-    public String TestPhotoUpload() {
-        return "Test successful";
-    }
-
 
 
 //

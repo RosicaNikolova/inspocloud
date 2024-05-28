@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: api-gateway
 spec:
-  type: ClusterIP  # Change to NodePort or LoadBalancer if external access is needed
+  type: LoadBalancer  # Change to NodePort or LoadBalancer if external access is needed
   ports:
     - port: 8083
       targetPort: 8083
